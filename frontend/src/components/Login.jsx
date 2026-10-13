@@ -13,33 +13,38 @@ export default function Login({ onLogin }) {
 
   return (
     <div className="login-page">
-      {/* Full-screen ColorBends WebGL background */}
+      {/* Full-screen ColorBends WebGL background with new palette */}
       <div style={{
         position: 'fixed',
         inset: 0,
         zIndex: 0,
-        background: '#303841'   /* fallback while WebGL initialises */
+        background: '#1e1e1e'   /* palette warm obsidian */
       }}>
         <ColorBends
-          colors={["#2185D5", "#000000"]}
-          rotation={90}
-          speed={0.2}
-          scale={1}
-          frequency={1}
-          warpStrength={1}
-          mouseInfluence={1}
-          noise={0}
-          parallax={0.5}
+          colors={["#00555a", "#2c4e37", "#1e1e1e"]}
+          rotation={65}
+          speed={0.12}
+          scale={1.2}
+          frequency={0.7}
+          warpStrength={0.65}
+          mouseInfluence={0.4}
+          noise={0.02}
+          parallax={0.3}
           iterations={1}
-          intensity={1.5}
-          bandWidth={6}
+          intensity={1.1}
+          bandWidth={8}
           transparent={false}
           autoRotate={0}
         />
       </div>
 
+      {/* Subtle organic ambient glow */}
+      <div className="login-ambient-gradient"></div>
+
       {/* Login card sits above the canvas */}
       <div className="login-card" style={{ position: 'relative', zIndex: 2 }}>
+        <div className="login-card-badge">Campus Mobility Portal</div>
+
         <div className="logo-container">
           <img
             src="/campusride-logo.png"
@@ -47,13 +52,14 @@ export default function Login({ onLogin }) {
             className="login-logo-img"
           />
           <div className="title">
-            <h2>CampusRide</h2>
+            <h2>Campus<span>Ride</span></h2>
           </div>
+          <p className="login-tagline">Bidholi &bull; Kandoli Transit System</p>
         </div>
 
         <form className="login-form">
           <div className="form-group">
-            <label htmlFor="username">User ID / Student ID / Username</label>
+            <label htmlFor="username">SAP ID / Driver ID</label>
             <input
               type="text"
               id="username"
@@ -76,21 +82,43 @@ export default function Login({ onLogin }) {
             />
           </div>
 
-          <div className="btn-group">
+          <div className="quick-fill-chips">
+            <span className="quick-fill-label">Quick fill:</span>
             <button
-              type="submit"
-              onClick={(e) => handleSubmit(e, 'driver')}
-              className="btn btn-driver"
+              type="button"
+              className="quick-chip"
+              onClick={() => { setUsername('STU1024'); setPassword('password123'); }}
             >
-              Driver Login
+              Student Demo
             </button>
+            <button
+              type="button"
+              className="quick-chip"
+              onClick={() => { setUsername('DRIVER01'); setPassword('driver123'); }}
+            >
+              Driver Demo
+            </button>
+          </div>
+
+          <div className="btn-group">
             <button
               type="submit"
               onClick={(e) => handleSubmit(e, 'student')}
               className="btn btn-student"
             >
-              Student Login
+              Enter Student Portal &rarr;
             </button>
+            <button
+              type="submit"
+              onClick={(e) => handleSubmit(e, 'driver')}
+              className="btn btn-driver"
+            >
+              Driver Portal Login
+            </button>
+          </div>
+
+          <div className="login-trust-notice">
+            <span>UPES Transit Network</span> &bull; <span>Live GPS Telemetry</span>
           </div>
         </form>
       </div>

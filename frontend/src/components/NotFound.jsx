@@ -8,7 +8,7 @@ export default function NotFound({ onNavigateHome, user }) {
       {/* Background WebGL / Visual Canvas */}
       <div className="not-found-bg-canvas">
         <ColorBends
-          colors={["#2185D5", "#111827", "#1e293b"]}
+          colors={["#00555a", "#2c4e37", "#1e1e1e"]}
           rotation={45}
           speed={0.15}
           scale={1.2}
