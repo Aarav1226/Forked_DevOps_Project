@@ -369,16 +369,16 @@ export default function TRexGame({ onGameOverScore }) {
     // Drawing Helpers (Pixel / Vector Graphics)
     const drawDino = (x, y, isGrounded, ducking, legStep, isDead) => {
       ctx.save();
-      ctx.fillStyle = isDead ? '#ef4444' : '#2185d5';
+      ctx.fillStyle = isDead ? '#ef4444' : '#2e7d7a';
 
       if (ducking && isGrounded) {
         // Ducking Dino
         const duckY = y + 16;
         ctx.fillRect(x, duckY + 8, 48, 16);
         ctx.fillRect(x + 36, duckY + 2, 18, 12);
-        ctx.fillStyle = '#f3f3f3';
+        ctx.fillStyle = '#efead8';
         ctx.fillRect(x + 44, duckY + 4, 3, 3);
-        ctx.fillStyle = isDead ? '#ef4444' : '#2185d5';
+        ctx.fillStyle = isDead ? '#ef4444' : '#2e7d7a';
         ctx.fillRect(x - 6, duckY + 10, 8, 6);
         if (legStep === 0) {
           ctx.fillRect(x + 12, duckY + 24, 6, 6);
@@ -392,9 +392,9 @@ export default function TRexGame({ onGameOverScore }) {
         ctx.fillRect(x + 8, y + 14, 22, 22);
         ctx.fillRect(x + 18, y, 22, 14);
         ctx.fillRect(x + 24, y + 2, 18, 10);
-        ctx.fillStyle = isDead ? '#000000' : '#ffffff';
+        ctx.fillStyle = isDead ? '#000000' : '#efead8';
         ctx.fillRect(x + 28, y + 3, 3, 3);
-        ctx.fillStyle = isDead ? '#ef4444' : '#2185d5';
+        ctx.fillStyle = isDead ? '#ef4444' : '#2e7d7a';
 
         // Little Arms
         ctx.fillRect(x + 32, y + 18, 8, 3);

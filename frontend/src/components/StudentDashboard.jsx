@@ -39,8 +39,8 @@ export default function StudentDashboard({ user, buses, onLogout, onUpdateBus, o
 
   return (
     <div className="dashboard-container" style={{ position: 'relative', overflow: 'hidden' }}>
-      <div style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0, pointerEvents: 'none', zIndex: 0, opacity: 0.55 }}>
-        <Silk speed={5} scale={1} color="#1a4a8a" noiseIntensity={0} rotation={0} />
+      <div style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0, pointerEvents: 'none', zIndex: 0, opacity: 0.35 }}>
+        <Silk speed={4} scale={1} color="#00555a" noiseIntensity={0} rotation={0} />
       </div>
 
       <div style={{ position: 'relative', zIndex: 1 }}>
@@ -257,9 +257,9 @@ export default function StudentDashboard({ user, buses, onLogout, onUpdateBus, o
                             style={{ 
                               marginRight: '6px', 
                               padding: '6px 12px', 
-                              background: (bus.seatsAvailable === 0 || currentBoardedBus) ? '#64748b' : '#2185d5', 
+                              background: (bus.seatsAvailable === 0 || currentBoardedBus) ? '#475569' : '#2e7d7a', 
                               border: 'none', 
-                              color: '#fff', 
+                              color: '#efead8', 
                               fontSize: '12px', 
                               fontWeight: '600', 
                               borderRadius: '6px', 
@@ -320,12 +320,12 @@ export default function StudentDashboard({ user, buses, onLogout, onUpdateBus, o
                 <svg viewBox="0 0 500 400" className="campus-svg-map">
                   <defs>
                     <linearGradient id="route-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor="#2185d5" stopOpacity="0.2" />
-                      <stop offset="100%" stopColor="#2185d5" stopOpacity="0.8" />
+                      <stop offset="0%" stopColor="#2e7d7a" stopOpacity="0.2" />
+                      <stop offset="100%" stopColor="#2e7d7a" stopOpacity="0.8" />
                     </linearGradient>
                   </defs>
 
-                  <g stroke="#3a4750" strokeWidth="0.5" opacity="0.3">
+                  <g stroke="#2c4e37" strokeWidth="0.5" opacity="0.3">
                     {[50,100,150,200,250,300,350,400,450].map(x => <line key={x} x1={x} y1="0" x2={x} y2="400" />)}
                     {[50,100,150,200,250,300,350].map(y => <line key={y} x1="0" y1={y} x2="500" y2={y} />)}
                   </g>
@@ -335,10 +335,10 @@ export default function StudentDashboard({ user, buses, onLogout, onUpdateBus, o
                   <path
                     d="M 70,185 Q 250,90 430,185"
                     fill="none"
-                    stroke={selectedBus && selectedBus.route.includes('Kandoli → Bidholi') ? '#2185d5' : '#3a4750'}
-                    strokeWidth={selectedBus && selectedBus.route.includes('Kandoli → Bidholi') ? '5' : '4'}
+                    stroke={selectedBus && selectedBus.route.includes('Kandoli → Bidholi') ? '#2e7d7a' : '#2c4e37'}
+                    strokeWidth={selectedBus && selectedBus.route.includes('Kandoli → Bidholi') ? '5' : '3.5'}
                     strokeLinecap="round"
-                    opacity={selectedBus && !selectedBus.route.includes('Kandoli → Bidholi') ? '0.3' : '0.8'}
+                    opacity={selectedBus && !selectedBus.route.includes('Kandoli → Bidholi') ? '0.35' : '0.9'}
                     className={selectedBus && selectedBus.route.includes('Kandoli → Bidholi') ? 'animated-route-line' : ''}
                   />
 
@@ -346,37 +346,37 @@ export default function StudentDashboard({ user, buses, onLogout, onUpdateBus, o
                   <path
                     d="M 430,215 Q 250,310 70,215"
                     fill="none"
-                    stroke={selectedBus && selectedBus.route.includes('Bidholi → Kandoli') ? '#2185d5' : '#3a4750'}
-                    strokeWidth={selectedBus && selectedBus.route.includes('Bidholi → Kandoli') ? '5' : '4'}
+                    stroke={selectedBus && selectedBus.route.includes('Bidholi → Kandoli') ? '#2e7d7a' : '#2c4e37'}
+                    strokeWidth={selectedBus && selectedBus.route.includes('Bidholi → Kandoli') ? '5' : '3.5'}
                     strokeLinecap="round"
-                    opacity={selectedBus && !selectedBus.route.includes('Bidholi → Kandoli') ? '0.3' : '0.8'}
+                    opacity={selectedBus && !selectedBus.route.includes('Bidholi → Kandoli') ? '0.35' : '0.9'}
                     className={selectedBus && selectedBus.route.includes('Bidholi → Kandoli') ? 'animated-route-line' : ''}
                   />
 
                   {/* Distance & Route Labels */}
-                  <text x="250" y="70" textAnchor="middle" fill="#60b5ff" fontSize="10" fontWeight="bold">
+                  <text x="250" y="70" textAnchor="middle" fill="#2e7d7a" fontSize="11" fontWeight="700">
                     Kandoli → Bidholi (Way 1 • 5 Buses)
                   </text>
-                  <text x="250" y="335" textAnchor="middle" fill="#34d399" fontSize="10" fontWeight="bold">
+                  <text x="250" y="335" textAnchor="middle" fill="#2c4e37" fontSize="11" fontWeight="700">
                     Bidholi → Kandoli (Way 2 • 5 Buses)
                   </text>
-                  <rect x="180" y="190" width="140" height="20" rx="10" fill="#1e293b" stroke="#3a4750" strokeWidth="1" />
-                  <text x="250" y="204" textAnchor="middle" fill="#94a3b8" fontSize="9" fontWeight="bold">
+                  <rect x="180" y="190" width="140" height="22" rx="11" fill="#1e1e1e" stroke="#2e7d7a" strokeWidth="1" />
+                  <text x="250" y="204" textAnchor="middle" fill="#efead8" fontSize="9" fontWeight="600">
                     4.0 km • 15-20 min ETA
                   </text>
 
                   {/* Stop 1: Kandoli */}
                   <g transform="translate(70, 200)" className="map-node">
-                    <circle r="16" fill="#1e293b" stroke="#60b5ff" strokeWidth="2" />
-                    <circle r="8" fill="#2185d5" />
-                    <text y="-24" textAnchor="middle" fill="#ffffff" fontSize="12" fontWeight="bold">Kandoli Stop</text>
+                    <circle r="16" fill="#1e1e1e" stroke="#2e7d7a" strokeWidth="2" />
+                    <circle r="8" fill="#00555a" />
+                    <text y="-24" textAnchor="middle" fill="#efead8" fontSize="12" fontWeight="700">Kandoli Stop</text>
                   </g>
 
                   {/* Stop 2: Bidholi */}
                   <g transform="translate(430, 200)" className="map-node">
-                    <circle r="16" fill="#1e293b" stroke="#34d399" strokeWidth="2" />
-                    <circle r="8" fill="#10b981" />
-                    <text y="-24" textAnchor="middle" fill="#ffffff" fontSize="12" fontWeight="bold">Bidholi Stop</text>
+                    <circle r="16" fill="#1e1e1e" stroke="#2c4e37" strokeWidth="2" />
+                    <circle r="8" fill="#2c4e37" />
+                    <text y="-24" textAnchor="middle" fill="#efead8" fontSize="12" fontWeight="700">Bidholi Stop</text>
                   </g>
 
                   {/* Buses on Map */}

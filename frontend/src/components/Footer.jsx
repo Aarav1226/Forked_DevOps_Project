@@ -9,7 +9,7 @@ export default function Footer() {
       bio: 'Passionate full-stack developer focusing on scalable web applications, real-time UI components, and modern frontend architecture.',
       linkedin: 'https://www.linkedin.com/in/aaravsaxena26/',
       github: 'https://github.com/Aarav1226/',
-      color: '#38bdf8'
+      color: '#2e7d7a'
     },
     {
       name: 'Sahaj',
@@ -18,7 +18,7 @@ export default function Footer() {
       bio: 'Specializing in cloud infrastructure, CI/CD automation pipelines, containerization, and high-availability server operations.',
       linkedin: 'https://www.linkedin.com/in/sahaj-parikh-abz/',
       github: 'https://github.com/Sahaj9238/',
-      color: '#34d399'
+      color: '#2c4e37'
     },
     {
       name: 'Shantanu',
@@ -27,7 +27,7 @@ export default function Footer() {
       bio: 'Crafting modern responsive user interfaces, interactive campus transit mapping systems, and seamless design experiences.',
       linkedin: 'https://www.linkedin.com/in/shantanupathak29/',
       github: 'https://github.com/shantanupathak29/',
-      color: '#a855f7'
+      color: '#00555a'
     }
   ];
 
