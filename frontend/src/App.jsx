@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
+import Header from './components/Header';
 import Login from './components/Login';
 import StudentDashboard from './components/StudentDashboard';
 import DriverDashboard from './components/DriverDashboard';
@@ -7,7 +8,6 @@ import NotFound from './components/NotFound';
 import Footer from './components/Footer';
 
 // Mock Campus Buses Data (2 Stops: Kandoli & Bidholi, 5 buses each direction with 15 min gaps & 15-20 min ETAs)
-// Mock Campus Buses Data with Boarded Students Records
 const INITIAL_BUSES = [
   // Kandoli -> Bidholi (5 Buses)
   {
@@ -107,16 +107,14 @@ const INITIAL_BUSES = [
     direction: "Kandoli → Bidholi",
     departureTime: "09:00 AM",
     driver: "DRIVER05",
-    seatsAvailable: 18,
+    seatsAvailable: 0,
     totalCapacity: 30,
-    status: "Delayed",
-    nextStop: "Bidholi",
-    eta: "20 mins",
-    boardedStudents: [
-      { id: "s105-1", name: "Kunal Ghosh", sapId: "500106112", boardingTime: "08:55 AM", from: "Kandoli", to: "Bidholi", status: "Boarded" },
-      { id: "s105-2", name: "Deepika Sharma", sapId: "500109441", boardingTime: "08:58 AM", from: "Kandoli", to: "Bidholi", status: "Boarded" }
-    ]
+    status: "Out of Service",
+    nextStop: "Kandoli",
+    eta: "--",
+    boardedStudents: []
   },
+
   // Bidholi -> Kandoli (5 Buses)
   {
     id: 6,
@@ -127,13 +125,12 @@ const INITIAL_BUSES = [
     driver: "DRIVER06",
     seatsAvailable: 11,
     totalCapacity: 30,
-    status: "In-Transit",
+    status: "Active",
     nextStop: "Kandoli",
     eta: "15 mins",
     boardedStudents: [
-      { id: "s201-1", name: "Harsh Vardhan", sapId: "500107221", boardingTime: "07:58 AM", from: "Bidholi", to: "Kandoli", status: "Boarded" },
-      { id: "s201-2", name: "Natasha Roy", sapId: "500108339", boardingTime: "08:00 AM", from: "Bidholi", to: "Kandoli", status: "Boarded" },
-      { id: "s201-3", name: "Chirag Singla", sapId: "500109115", boardingTime: "08:02 AM", from: "Bidholi", to: "Kandoli", status: "Boarded" }
+      { id: "s201-1", name: "Kunal Ghosh", sapId: "500106771", boardingTime: "08:03 AM", from: "Bidholi", to: "Kandoli", status: "Boarded" },
+      { id: "s201-2", name: "Shruti Aggarwal", sapId: "500108552", boardingTime: "08:05 AM", from: "Bidholi", to: "Kandoli", status: "Boarded" }
     ]
   },
   {
@@ -143,14 +140,13 @@ const INITIAL_BUSES = [
     direction: "Bidholi → Kandoli",
     departureTime: "08:15 AM",
     driver: "DRIVER07",
-    seatsAvailable: 3,
+    seatsAvailable: 19,
     totalCapacity: 30,
-    status: "Delayed",
+    status: "In-Transit",
     nextStop: "Kandoli",
-    eta: "18 mins",
+    eta: "17 mins",
     boardedStudents: [
-      { id: "s202-1", name: "Yash Chopra", sapId: "500106889", boardingTime: "08:12 AM", from: "Bidholi", to: "Kandoli", status: "Boarded" },
-      { id: "s202-2", name: "Pallavi Joshi", sapId: "500107445", boardingTime: "08:14 AM", from: "Bidholi", to: "Kandoli", status: "Boarded" }
+      { id: "s202-1", name: "Harsh Vardhan", sapId: "500109118", boardingTime: "08:12 AM", from: "Bidholi", to: "Kandoli", status: "Boarded" }
     ]
   },
   {
@@ -160,15 +156,12 @@ const INITIAL_BUSES = [
     direction: "Bidholi → Kandoli",
     departureTime: "08:30 AM",
     driver: "DRIVER08",
-    seatsAvailable: 25,
+    seatsAvailable: 26,
     totalCapacity: 30,
-    status: "In-Transit",
+    status: "Active",
     nextStop: "Kandoli",
-    eta: "17 mins",
-    boardedStudents: [
-      { id: "s203-1", name: "Nikhil Mehra", sapId: "500109990", boardingTime: "08:27 AM", from: "Bidholi", to: "Kandoli", status: "Boarded" },
-      { id: "s203-2", name: "Sonalika Basu", sapId: "500108442", boardingTime: "08:29 AM", from: "Bidholi", to: "Kandoli", status: "Boarded" }
-    ]
+    eta: "15 mins",
+    boardedStudents: []
   },
   {
     id: 9,
@@ -177,14 +170,13 @@ const INITIAL_BUSES = [
     direction: "Bidholi → Kandoli",
     departureTime: "08:45 AM",
     driver: "DRIVER09",
-    seatsAvailable: 15,
+    seatsAvailable: 14,
     totalCapacity: 30,
-    status: "In-Transit",
+    status: "Delayed",
     nextStop: "Kandoli",
-    eta: "16 mins",
+    eta: "22 mins",
     boardedStudents: [
-      { id: "s204-1", name: "Ritwik Ghosh", sapId: "500107119", boardingTime: "08:41 AM", from: "Bidholi", to: "Kandoli", status: "Boarded" },
-      { id: "s204-2", name: "Jasleen Kaur", sapId: "500109338", boardingTime: "08:43 AM", from: "Bidholi", to: "Kandoli", status: "Boarded" }
+      { id: "s204-1", name: "Ritika Sen", sapId: "500107889", boardingTime: "08:41 AM", from: "Bidholi", to: "Kandoli", status: "Boarded" }
     ]
   },
   {
@@ -194,55 +186,36 @@ const INITIAL_BUSES = [
     direction: "Bidholi → Kandoli",
     departureTime: "09:00 AM",
     driver: "DRIVER10",
-    seatsAvailable: 9,
+    seatsAvailable: 0,
     totalCapacity: 30,
-    status: "Delayed",
-    nextStop: "Kandoli",
-    eta: "20 mins",
-    boardedStudents: [
-      { id: "s205-1", name: "Samarjeet Singh", sapId: "500108556", boardingTime: "08:54 AM", from: "Bidholi", to: "Kandoli", status: "Boarded" },
-      { id: "s205-2", name: "Tanvi Agarwal", sapId: "500106774", boardingTime: "08:57 AM", from: "Bidholi", to: "Kandoli", status: "Boarded" }
-    ]
+    status: "Out of Service",
+    nextStop: "Bidholi",
+    eta: "--",
+    boardedStudents: []
   }
 ];
 
 function App() {
   const [user, setUser] = useState(null);
   const [buses, setBuses] = useState(INITIAL_BUSES);
-  const [currentView, setCurrentView] = useState(() => {
-    const path = window.location.pathname.toLowerCase();
-    const hash = window.location.hash.toLowerCase();
-    if (path === '/404' || path === '/not-found' || hash === '#/404' || hash === '#404') {
-      return '404';
-    }
-    return 'app';
-  });
+  const [currentView, setCurrentView] = useState('app'); // 'app' | '404'
 
+  // Sync route path for 404
   useEffect(() => {
-    const handleUrlChange = () => {
-      const path = window.location.pathname.toLowerCase();
-      const hash = window.location.hash.toLowerCase();
-      if (path === '/404' || path === '/not-found' || hash === '#/404' || hash === '#404') {
-        setCurrentView('404');
-      } else {
-        setCurrentView('app');
-      }
-    };
-
-    window.addEventListener('popstate', handleUrlChange);
-    window.addEventListener('hashchange', handleUrlChange);
-    return () => {
-      window.removeEventListener('popstate', handleUrlChange);
-      window.removeEventListener('hashchange', handleUrlChange);
-    };
+    const path = window.location.pathname;
+    if (path === '/404') {
+      setCurrentView('404');
+    }
   }, []);
 
-  const handleLogin = (userInfo) => {
-    setUser(userInfo);
+  const handleLogin = (userData) => {
+    setUser(userData);
+    setCurrentView('app');
   };
 
   const handleLogout = () => {
     setUser(null);
+    setCurrentView('app');
   };
 
   const handleUpdateBus = (busId, updatedFields) => {
@@ -253,46 +226,41 @@ function App() {
     );
   };
 
+  // Passenger boarding & deboarding management
   const handleBoardStudent = (busId, studentData) => {
-    const sapIdToCheck = (studentData.sapId || '500100000').trim();
-    let alreadyBoardedOnBus = null;
+    let busFound = buses.find(b => b.id === busId);
+    if (!busFound) return { success: false, message: 'Bus not found' };
 
-    buses.forEach(b => {
-      if (b.boardedStudents && b.boardedStudents.some(s => s.sapId === sapIdToCheck)) {
-        alreadyBoardedOnBus = b.busNo;
-      }
-    });
+    // Check if student already booked ANY bus
+    const alreadyBoarded = buses.some(b =>
+      b.boardedStudents?.some(s => s.sapId.toLowerCase() === studentData.sapId.toLowerCase())
+    );
 
-    const targetBus = buses.find(b => b.id === busId);
-    if (targetBus && targetBus.status !== 'Active') {
-      return { success: false, message: `Booking is only allowed when the bus is Active (current status: ${targetBus.status}).` };
+    if (alreadyBoarded) {
+      return { success: false, message: `Student (SAP: ${studentData.sapId}) is already checked into an active bus.` };
     }
 
-    if (alreadyBoardedOnBus) {
-      return { success: false, message: `Student with SAP ID ${sapIdToCheck} is already boarded on bus ${alreadyBoardedOnBus}. Please deboard first.` };
+    if (busFound.seatsAvailable <= 0) {
+      return { success: false, message: 'Bus is at full capacity!' };
     }
+
+    const newPassenger = {
+      id: `p-${Date.now()}`,
+      name: studentData.name,
+      sapId: studentData.sapId,
+      boardingTime: studentData.boardingTime || new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      from: studentData.from || 'Kandoli',
+      to: studentData.to || 'Bidholi',
+      status: 'Boarded'
+    };
 
     setBuses((prevBuses) =>
       prevBuses.map((bus) => {
         if (bus.id === busId) {
-          const currentList = bus.boardedStudents || [];
-          const now = new Date();
-          const defaultTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-          const newStudent = {
-            id: `s-${busId}-${Date.now()}`,
-            name: studentData.name || 'Student',
-            sapId: sapIdToCheck,
-            boardingTime: studentData.boardingTime || defaultTime,
-            from: studentData.from || (bus.route.includes('Kandoli → Bidholi') ? 'Kandoli' : 'Bidholi'),
-            to: studentData.to || (bus.route.includes('Kandoli → Bidholi') ? 'Bidholi' : 'Kandoli'),
-            status: 'Boarded'
-          };
-          const updatedList = [newStudent, ...currentList];
-          const newSeats = Math.max(0, bus.seatsAvailable - 1);
           return {
             ...bus,
-            boardedStudents: updatedList,
-            seatsAvailable: newSeats
+            boardedStudents: [newPassenger, ...(bus.boardedStudents || [])],
+            seatsAvailable: Math.max(0, bus.seatsAvailable - 1)
           };
         }
         return bus;
@@ -335,7 +303,7 @@ function App() {
     );
   };
 
-  const _navigateTo404 = () => {
+  const navigateTo404 = () => {
     setCurrentView('404');
     window.history.pushState(null, '', '/404');
   };
@@ -345,8 +313,30 @@ function App() {
     window.history.pushState(null, '', '/');
   };
 
+  // Find if user has boarded ride
+  const currentBoardedBus = user && user.role === 'student' ? buses.find(b =>
+    b.boardedStudents?.some(s => s.name === user.username || s.sapId === '500109999' || s.sapId === user.username)
+  ) : null;
+
   return (
     <div className="app-container">
+      {/* Universal Top Transit Navigation Bar */}
+      <Header
+        user={user}
+        onLogout={handleLogout}
+        currentBoardedBus={currentBoardedBus}
+        onDeboardClick={() => {
+          if (currentBoardedBus) {
+            const studentEntry = currentBoardedBus.boardedStudents?.find(
+              s => s.name === user.username || s.sapId === '500109999' || s.sapId === user.username
+            );
+            if (studentEntry) {
+              handleDeboardStudent(currentBoardedBus.id, studentEntry.id);
+            }
+          }
+        }}
+      />
+
       <main className="app-main-content">
         {currentView === '404' ? (
           <NotFound user={user} onNavigateHome={navigateToHome} />
@@ -373,6 +363,7 @@ function App() {
           />
         )}
       </main>
+
       <Footer />
     </div>
   );

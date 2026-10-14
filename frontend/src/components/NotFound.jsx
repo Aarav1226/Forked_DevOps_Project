@@ -1,32 +1,9 @@
 import React from 'react';
 import TRexGame from './TRexGame';
-import ColorBends from './ColorBends';
 
 export default function NotFound({ onNavigateHome, user }) {
   return (
     <div className="not-found-page">
-      {/* Background WebGL / Visual Canvas */}
-      <div className="not-found-bg-canvas">
-        <ColorBends
-          colors={["#00555a", "#2c4e37", "#1e1e1e"]}
-          rotation={45}
-          speed={0.15}
-          scale={1.2}
-          frequency={0.8}
-          warpStrength={0.8}
-          mouseInfluence={0.5}
-          noise={0}
-          parallax={0.3}
-          iterations={1}
-          intensity={1.2}
-          bandWidth={8}
-          transparent={false}
-          autoRotate={0}
-        />
-      </div>
-
-      <div className="not-found-overlay"></div>
-
       <div className="not-found-container">
         {/* Navigation Bar / Brand Header */}
         <header className="not-found-header">
