@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Silk from './Silk';
 
 export default function DriverDashboard({ user, buses, onUpdateBus, onBoardStudent, onDeboardStudent, onDeboardAllStudents, onLogout }) {
   const defaultBus = buses.find(b => b.driver.toLowerCase() === user.username.toLowerCase()) || buses[0];
@@ -125,28 +124,30 @@ export default function DriverDashboard({ user, buses, onUpdateBus, onBoardStude
   );
 
   return (
-    <div className="dashboard-container" style={{ position: 'relative', overflow: 'hidden' }}>
-      <div style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0, pointerEvents: 'none', zIndex: 0, opacity: 0.35 }}>
-        <Silk speed={4} scale={1} color="#2c4e37" noiseIntensity={0} rotation={0} />
+    <div className="dashboard-container">
+      {/* Driver Cockpit Banner */}
+      <div className="dashboard-hero-banner driver-hero">
+        <div className="banner-left-info">
+          <div className="banner-badge-row">
+            <span className="portal-badge driver-badge">
+              <span className="badge-dot"></span> Operations Cockpit
+            </span>
+            <span className="portal-badge assigned-bus-badge">
+              🚌 Assigned: {driverBus.busNo}
+            </span>
+          </div>
+          <h2 className="banner-title">Captain <span>{user.username}</span></h2>
+          <p className="banner-desc">
+            Manage passenger boarding check-ins, broadcast real-time bus statuses, and update transit stops.
+          </p>
+        </div>
+        <div className="banner-quick-actions">
+          <div className="driver-status-chip">
+            <span className={`status-indicator-dot ${driverBus.status.toLowerCase().replace(/\s+/g, '-')}`}></span>
+            <span>Bus Status: <strong>{driverBus.status}</strong></span>
+          </div>
+        </div>
       </div>
-
-      <div style={{ position: 'relative', zIndex: 1 }}>
-        {/* Header */}
-        <header className="dashboard-header">
-          <div className="header-brand">
-            <img
-              src="/campusride-logo.png"
-              alt="CampusRide Logo"
-              style={{ width: '38px', height: '38px', objectFit: 'contain', borderRadius: '8px', marginRight: '10px' }}
-            />
-            <h1>CampusRide</h1>
-            <span className="badge badge-driver">Driver Portal</span>
-          </div>
-          <div className="user-profile">
-            <span className="username">Driver: <strong>{user.username}</strong></span>
-            <button className="btn-logout" onClick={onLogout}>Logout</button>
-          </div>
-        </header>
 
         {/* Top Summary Stats */}
         <section className="stats-grid">
@@ -171,7 +172,7 @@ export default function DriverDashboard({ user, buses, onUpdateBus, onBoardStude
           </div>
 
           <div className="stat-card">
-            <div className="stat-icon-box" style={{ background: 'transparent', color: '#efead8' }}>
+            <div className="stat-icon-box" style={{ background: 'transparent', color: 'var(--primary)' }}>
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
             </div>
             <div className="stat-content">
@@ -544,7 +545,6 @@ export default function DriverDashboard({ user, buses, onUpdateBus, onBoardStude
             </div>
           </div>
         </div>
-      </div>
 
       {/* ===================================================================
           MODAL: MANUAL BOARD STUDENT

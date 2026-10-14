@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Silk from './Silk';
 
 export default function StudentDashboard({ user, buses, onLogout, onUpdateBus, onBoardStudent, onDeboardStudent }) {
   const [searchTerm, setSearchTerm] = useState('');
@@ -38,37 +37,35 @@ export default function StudentDashboard({ user, buses, onLogout, onUpdateBus, o
   }, 0);
 
   return (
-    <div className="dashboard-container" style={{ position: 'relative', overflow: 'hidden' }}>
-      <div style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0, pointerEvents: 'none', zIndex: 0, opacity: 0.35 }}>
-        <Silk speed={4} scale={1} color="#00555a" noiseIntensity={0} rotation={0} />
+    <div className="dashboard-container">
+      {/* Portal Hero Banner */}
+      <div className="dashboard-hero-banner student-hero">
+        <div className="banner-left-info">
+          <div className="banner-badge-row">
+            <span className="portal-badge student-badge">
+              <span className="badge-dot"></span> Student Portal
+            </span>
+            <span className="portal-badge route-badge-mini">
+              📍 Kandoli ↔ Bidholi Line
+            </span>
+          </div>
+          <h2 className="banner-title">Welcome back, <span>{user.username}</span></h2>
+          <p className="banner-desc">
+            Monitor real-time shuttle seat capacity, track departure timelines, and reserve bus seats instantly.
+          </p>
+        </div>
+        <div className="banner-quick-actions">
+          {currentBoardedBus && (
+            <button 
+              className="btn-active-ride-action" 
+              onClick={() => setModalState({ isOpen: true, mode: 'deboard', bus: currentBoardedBus, sapId: modalState.sapId, message: '' })}
+            >
+              <span className="live-pulse-dot"></span>
+              <span>Deboard {currentBoardedBus.busNo}</span>
+            </button>
+          )}
+        </div>
       </div>
-
-      <div style={{ position: 'relative', zIndex: 1 }}>
-        {/* Header */}
-        <header className="dashboard-header">
-          <div className="header-brand">
-            <img
-              src="/campusride-logo.png"
-              alt="CampusRide Logo"
-              style={{ width: '38px', height: '38px', objectFit: 'contain', borderRadius: '8px', marginRight: '10px' }}
-            />
-            <h1>CampusRide</h1>
-            <span className="badge badge-student">Student Portal</span>
-          </div>
-          <div className="user-profile">
-            <span className="username">Hello, {user.username}</span>
-            {currentBoardedBus && (
-              <button 
-                className="btn-action-outline" 
-                style={{ padding: '6px 12px', fontSize: '12px', borderColor: '#ef4444', color: '#fca5a5', marginRight: '8px', cursor: 'pointer' }}
-                onClick={() => setModalState({ isOpen: true, mode: 'deboard', bus: currentBoardedBus, sapId: modalState.sapId, message: '' })}
-              >
-                🛑 Deboard ({currentBoardedBus.busNo})
-              </button>
-            )}
-            <button className="btn-logout" onClick={onLogout}>Logout</button>
-          </div>
-        </header>
 
         {/* Active Booking Banner (Only shown if student has booked a seat) */}
         {currentBoardedBus && (
@@ -325,7 +322,7 @@ export default function StudentDashboard({ user, buses, onLogout, onUpdateBus, o
                     </linearGradient>
                   </defs>
 
-                  <g stroke="#2c4e37" strokeWidth="0.5" opacity="0.3">
+                  <g stroke="#e2e8f0" strokeWidth="0.8" opacity="0.8">
                     {[50,100,150,200,250,300,350,400,450].map(x => <line key={x} x1={x} y1="0" x2={x} y2="400" />)}
                     {[50,100,150,200,250,300,350].map(y => <line key={y} x1="0" y1={y} x2="500" y2={y} />)}
                   </g>
@@ -335,10 +332,10 @@ export default function StudentDashboard({ user, buses, onLogout, onUpdateBus, o
                   <path
                     d="M 70,185 Q 250,90 430,185"
                     fill="none"
-                    stroke={selectedBus && selectedBus.route.includes('Kandoli → Bidholi') ? '#2e7d7a' : '#2c4e37'}
+                    stroke={selectedBus && selectedBus.route.includes('Kandoli → Bidholi') ? '#0d9488' : '#cbd5e1'}
                     strokeWidth={selectedBus && selectedBus.route.includes('Kandoli → Bidholi') ? '5' : '3.5'}
                     strokeLinecap="round"
-                    opacity={selectedBus && !selectedBus.route.includes('Kandoli → Bidholi') ? '0.35' : '0.9'}
+                    opacity={selectedBus && !selectedBus.route.includes('Kandoli → Bidholi') ? '0.4' : '0.95'}
                     className={selectedBus && selectedBus.route.includes('Kandoli → Bidholi') ? 'animated-route-line' : ''}
                   />
 
@@ -346,37 +343,37 @@ export default function StudentDashboard({ user, buses, onLogout, onUpdateBus, o
                   <path
                     d="M 430,215 Q 250,310 70,215"
                     fill="none"
-                    stroke={selectedBus && selectedBus.route.includes('Bidholi → Kandoli') ? '#2e7d7a' : '#2c4e37'}
+                    stroke={selectedBus && selectedBus.route.includes('Bidholi → Kandoli') ? '#0d9488' : '#cbd5e1'}
                     strokeWidth={selectedBus && selectedBus.route.includes('Bidholi → Kandoli') ? '5' : '3.5'}
                     strokeLinecap="round"
-                    opacity={selectedBus && !selectedBus.route.includes('Bidholi → Kandoli') ? '0.35' : '0.9'}
+                    opacity={selectedBus && !selectedBus.route.includes('Bidholi → Kandoli') ? '0.4' : '0.95'}
                     className={selectedBus && selectedBus.route.includes('Bidholi → Kandoli') ? 'animated-route-line' : ''}
                   />
 
                   {/* Distance & Route Labels */}
-                  <text x="250" y="70" textAnchor="middle" fill="#2e7d7a" fontSize="11" fontWeight="700">
+                  <text x="250" y="70" textAnchor="middle" fill="#0d9488" fontSize="11" fontWeight="700">
                     Kandoli → Bidholi (Way 1 • 5 Buses)
                   </text>
-                  <text x="250" y="335" textAnchor="middle" fill="#2c4e37" fontSize="11" fontWeight="700">
+                  <text x="250" y="335" textAnchor="middle" fill="#059669" fontSize="11" fontWeight="700">
                     Bidholi → Kandoli (Way 2 • 5 Buses)
                   </text>
-                  <rect x="180" y="190" width="140" height="22" rx="11" fill="#1e1e1e" stroke="#2e7d7a" strokeWidth="1" />
-                  <text x="250" y="204" textAnchor="middle" fill="#efead8" fontSize="9" fontWeight="600">
+                  <rect x="180" y="190" width="140" height="22" rx="11" fill="#ffffff" stroke="#cbd5e1" strokeWidth="1" />
+                  <text x="250" y="204" textAnchor="middle" fill="#334155" fontSize="9" fontWeight="600">
                     4.0 km • 15-20 min ETA
                   </text>
 
                   {/* Stop 1: Kandoli */}
                   <g transform="translate(70, 200)" className="map-node">
-                    <circle r="16" fill="#1e1e1e" stroke="#2e7d7a" strokeWidth="2" />
-                    <circle r="8" fill="#00555a" />
-                    <text y="-24" textAnchor="middle" fill="#efead8" fontSize="12" fontWeight="700">Kandoli Stop</text>
+                    <circle r="16" fill="#ffffff" stroke="#0d9488" strokeWidth="2.5" />
+                    <circle r="7" fill="#0d9488" />
+                    <text y="-24" textAnchor="middle" fill="#0f172a" fontSize="12" fontWeight="700">Kandoli Stop</text>
                   </g>
 
                   {/* Stop 2: Bidholi */}
                   <g transform="translate(430, 200)" className="map-node">
-                    <circle r="16" fill="#1e1e1e" stroke="#2c4e37" strokeWidth="2" />
-                    <circle r="8" fill="#2c4e37" />
-                    <text y="-24" textAnchor="middle" fill="#efead8" fontSize="12" fontWeight="700">Bidholi Stop</text>
+                    <circle r="16" fill="#ffffff" stroke="#059669" strokeWidth="2.5" />
+                    <circle r="7" fill="#059669" />
+                    <text y="-24" textAnchor="middle" fill="#0f172a" fontSize="12" fontWeight="700">Bidholi Stop</text>
                   </g>
 
                   {/* Buses on Map */}
@@ -400,10 +397,10 @@ export default function StudentDashboard({ user, buses, onLogout, onUpdateBus, o
 
                     const isBusSelected = selectedBus && selectedBus.id === bus.id;
                     
-                    // Status Color map: In-Transit = Green (#10b981), Delayed = Red (#ef4444), Active = Blue (#2185d5), Out of Service = Grey (#64748b)
+                    // Status Color map: In-Transit = Green (#10b981), Delayed = Red (#ef4444), Active = Blue (#0284c7), Out of Service = Grey (#64748b)
                     let statusColor = '#10b981';
                     if (bus.status === 'Delayed') statusColor = '#ef4444';
-                    else if (bus.status === 'Active') statusColor = '#2185d5';
+                    else if (bus.status === 'Active') statusColor = '#0284c7';
                     else if (bus.status === 'Out of Service') statusColor = '#64748b';
 
                     return (
@@ -424,7 +421,7 @@ export default function StudentDashboard({ user, buses, onLogout, onUpdateBus, o
                           height="22"
                           rx="5"
                           fill={statusColor}
-                          stroke={isBusSelected ? '#ffffff' : '#1e293b'}
+                          stroke={isBusSelected ? '#ffffff' : '#0f172a'}
                           strokeWidth={isBusSelected ? '2' : '1.5'}
                         />
                         <text textAnchor="middle" y="4" fill="#ffffff" fontSize="9" fontWeight="bold">
@@ -439,20 +436,20 @@ export default function StudentDashboard({ user, buses, onLogout, onUpdateBus, o
               </div>
 
               {/* Status Color Legend */}
-              <div style={{ display: 'flex', gap: '14px', marginTop: '14px', alignItems: 'center', justifyContent: 'center', background: 'rgba(15, 23, 42, 0.6)', padding: '10px 14px', borderRadius: '10px', flexWrap: 'wrap' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#f3f3f3' }}>
+              <div style={{ display: 'flex', gap: '14px', marginTop: '14px', alignItems: 'center', justifyContent: 'center', background: '#f8fafc', border: '1px solid #e2e8f0', padding: '10px 14px', borderRadius: '10px', flexWrap: 'wrap' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#334155', fontWeight: '500' }}>
                   <span style={{ width: '12px', height: '12px', borderRadius: '3px', backgroundColor: '#10b981', display: 'inline-block' }}></span>
                   In-Transit
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#f3f3f3' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#334155', fontWeight: '500' }}>
                   <span style={{ width: '12px', height: '12px', borderRadius: '3px', backgroundColor: '#ef4444', display: 'inline-block' }}></span>
                   Delayed
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#f3f3f3' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#334155', fontWeight: '500' }}>
                   <span style={{ width: '12px', height: '12px', borderRadius: '3px', backgroundColor: '#64748b', display: 'inline-block' }}></span>
                   Out of Service
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#f3f3f3' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#334155', fontWeight: '500' }}>
                   <span style={{ width: '14px', height: '14px', borderRadius: '50%', border: '2px solid #f59e0b', display: 'inline-block' }}></span>
                   Selected Bus
                 </div>
@@ -462,7 +459,7 @@ export default function StudentDashboard({ user, buses, onLogout, onUpdateBus, o
                 <div className="map-legend">
                   <h4>Inspecting: {selectedBus.busNo} ({selectedBus.route})</h4>
                   <p>
-                    Status: <span className="bold" style={{ color: selectedBus.status === 'Delayed' ? '#f87171' : selectedBus.status === 'Out of Service' ? '#94a3b8' : '#34d399' }}>{selectedBus.status}</span> | 
+                    Status: <span className="bold" style={{ color: selectedBus.status === 'Delayed' ? '#ef4444' : selectedBus.status === 'Out of Service' ? '#64748b' : '#10b981' }}>{selectedBus.status}</span> | 
                     Departure: <span className="bold">{selectedBus.departureTime}</span> | 
                     Next Stop: <span className="bold">{selectedBus.nextStop} (ETA: {selectedBus.eta})</span>
                   </p>
@@ -471,7 +468,6 @@ export default function StudentDashboard({ user, buses, onLogout, onUpdateBus, o
             </div>
           </div>
         </div>
-      </div>
 
       {/* Booking / Deboard Modal */}
       {modalState.isOpen && (

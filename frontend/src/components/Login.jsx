@@ -1,126 +1,187 @@
 import React, { useState } from 'react';
-import ColorBends from './ColorBends';
 
 export default function Login({ onLogin }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [activeTab, setActiveTab] = useState('student'); // 'student' | 'driver'
 
-  const handleSubmit = (e, role) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (!username || !password) return;
-    onLogin({ username, role });
+    onLogin({ username, role: activeTab });
+  };
+
+  const handleQuickFill = (role) => {
+    setActiveTab(role);
+    if (role === 'student') {
+      setUsername('STU1024');
+      setPassword('password123');
+    } else {
+      setUsername('DRIVER01');
+      setPassword('driver123');
+    }
   };
 
   return (
     <div className="login-page">
-      {/* Full-screen ColorBends WebGL background with new palette */}
-      <div style={{
-        position: 'fixed',
-        inset: 0,
-        zIndex: 0,
-        background: '#1e1e1e'   /* palette warm obsidian */
-      }}>
-        <ColorBends
-          colors={["#00555a", "#2c4e37", "#1e1e1e"]}
-          rotation={65}
-          speed={0.12}
-          scale={1.2}
-          frequency={0.7}
-          warpStrength={0.65}
-          mouseInfluence={0.4}
-          noise={0.02}
-          parallax={0.3}
-          iterations={1}
-          intensity={1.1}
-          bandWidth={8}
-          transparent={false}
-          autoRotate={0}
-        />
-      </div>
-
-      {/* Subtle organic ambient glow */}
-      <div className="login-ambient-gradient"></div>
-
-      {/* Login card sits above the canvas */}
-      <div className="login-card" style={{ position: 'relative', zIndex: 2 }}>
-        <div className="login-card-badge">Campus Mobility Portal</div>
-
-        <div className="logo-container">
-          <img
-            src="/campusride-logo.png"
-            alt="CampusRide Logo"
-            className="login-logo-img"
-          />
-          <div className="title">
-            <h2>Campus<span>Ride</span></h2>
+      <div className="login-layout-wrapper">
+        {/* Left Side: Editorial Transit Banner */}
+        <div className="login-brand-panel">
+          <div className="brand-header-mini">
+            <img
+              src="/campusride-logo.png"
+              alt="CampusRide Logo"
+              className="login-brand-logo"
+            />
+            <div className="brand-badge-pill">
+              <span className="live-dot-ping"></span>
+              <span>LIVE TRANSIT TELEMETRY</span>
+            </div>
           </div>
-          <p className="login-tagline">Bidholi &bull; Kandoli Transit System</p>
+
+          <div className="brand-hero-text">
+            <h1 className="brand-hero-title">
+              Effortless Mobility for <span>Campus Life</span>
+            </h1>
+            <p className="brand-hero-subtitle">
+              Real-time shuttle schedules, seat availability tracking, and live route monitoring between Kandoli &amp; Bidholi campuses.
+            </p>
+          </div>
+
+          <div className="brand-stats-row">
+            <div className="brand-stat-box">
+              <span className="stat-value">10</span>
+              <span className="stat-label">Active Shuttles</span>
+            </div>
+            <div className="brand-stat-box">
+              <span className="stat-value">15 min</span>
+              <span className="stat-label">Departure Freq</span>
+            </div>
+            <div className="brand-stat-box">
+              <span className="stat-value">4.0 km</span>
+              <span className="stat-label">Express Route</span>
+            </div>
+          </div>
+
+          <div className="route-preview-badge">
+            <div className="route-stop-point">
+              <span className="stop-circle stop-kandoli"></span>
+              <span>Kandoli Campus</span>
+            </div>
+            <div className="route-arrow-line">
+              <span className="route-moving-dot"></span>
+            </div>
+            <div className="route-stop-point">
+              <span className="stop-circle stop-bidholi"></span>
+              <span>Bidholi Campus</span>
+            </div>
+          </div>
         </div>
 
-        <form className="login-form">
-          <div className="form-group">
-            <label htmlFor="username">SAP ID / Driver ID</label>
-            <input
-              type="text"
-              id="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              placeholder="e.g. STU1024 or DRIVER01"
-              required
-            />
-          </div>
+        {/* Right Side: Interactive Login Portal */}
+        <div className="login-card-container">
+          <div className="login-card">
+            <div className="login-card-header">
+              <div className="auth-pill-tag">
+                <span>PORTAL AUTHENTICATION</span>
+              </div>
+              <h2 className="login-form-title">Welcome to CampusRide</h2>
+              <p className="login-form-desc">
+                Select your role to access shuttle schedules or driver operations.
+              </p>
+            </div>
 
-          <div className="form-group">
-            <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password"
-              required
-            />
-          </div>
+            {/* Role Switcher Tabs */}
+            <div className="role-switch-container">
+              <button
+                type="button"
+                className={`role-tab-btn ${activeTab === 'student' ? 'active-student' : ''}`}
+                onClick={() => {
+                  setActiveTab('student');
+                  if (!username || username === 'DRIVER01') setUsername('STU1024');
+                }}
+              >
+                <span className="tab-icon">🎓</span>
+                <span className="tab-text">Student Portal</span>
+              </button>
+              <button
+                type="button"
+                className={`role-tab-btn ${activeTab === 'driver' ? 'active-driver' : ''}`}
+                onClick={() => {
+                  setActiveTab('driver');
+                  if (!username || username === 'STU1024') setUsername('DRIVER01');
+                }}
+              >
+                <span className="tab-icon">🚍</span>
+                <span className="tab-text">Driver Operations</span>
+              </button>
+            </div>
 
-          <div className="quick-fill-chips">
-            <span className="quick-fill-label">Quick fill:</span>
-            <button
-              type="button"
-              className="quick-chip"
-              onClick={() => { setUsername('STU1024'); setPassword('password123'); }}
-            >
-              Student Demo
-            </button>
-            <button
-              type="button"
-              className="quick-chip"
-              onClick={() => { setUsername('DRIVER01'); setPassword('driver123'); }}
-            >
-              Driver Demo
-            </button>
-          </div>
+            <form className="login-form" onSubmit={handleSubmit}>
+              <div className="form-group">
+                <label htmlFor="username">
+                  {activeTab === 'student' ? 'Student SAP ID' : 'Driver Badge ID'}
+                </label>
+                <div className="input-with-icon">
+                  <span className="field-icon">{activeTab === 'student' ? '🆔' : '🪪'}</span>
+                  <input
+                    type="text"
+                    id="username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    placeholder={activeTab === 'student' ? 'e.g. STU1024 or 500108920' : 'e.g. DRIVER01'}
+                    required
+                  />
+                </div>
+              </div>
 
-          <div className="btn-group">
-            <button
-              type="submit"
-              onClick={(e) => handleSubmit(e, 'student')}
-              className="btn btn-student"
-            >
-              Enter Student Portal &rarr;
-            </button>
-            <button
-              type="submit"
-              onClick={(e) => handleSubmit(e, 'driver')}
-              className="btn btn-driver"
-            >
-              Driver Portal Login
-            </button>
-          </div>
+              <div className="form-group">
+                <label htmlFor="password">Security Password</label>
+                <div className="input-with-icon">
+                  <span className="field-icon">🔒</span>
+                  <input
+                    type="password"
+                    id="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Enter account password"
+                    required
+                  />
+                </div>
+              </div>
 
-          <div className="login-trust-notice">
-            <span>UPES Transit Network</span> &bull; <span>Live GPS Telemetry</span>
+              <div className="quick-fill-chips">
+                <span className="quick-fill-label">Instant Demo:</span>
+                <button
+                  type="button"
+                  className={`quick-chip ${activeTab === 'student' ? 'active-chip' : ''}`}
+                  onClick={() => handleQuickFill('student')}
+                >
+                  Student (STU1024)
+                </button>
+                <button
+                  type="button"
+                  className={`quick-chip ${activeTab === 'driver' ? 'active-chip' : ''}`}
+                  onClick={() => handleQuickFill('driver')}
+                >
+                  Driver (DRIVER01)
+                </button>
+              </div>
+
+              <button
+                type="submit"
+                className={`btn btn-portal-submit ${activeTab === 'student' ? 'btn-student-submit' : 'btn-driver-submit'}`}
+              >
+                <span>{activeTab === 'student' ? 'Enter Student Portal' : 'Access Driver Cockpit'}</span>
+                <span className="arrow-icon">&rarr;</span>
+              </button>
+
+              <div className="login-trust-notice">
+                <span>UPES Transit Network</span> &bull; <span>Verified GPS Sync</span>
+              </div>
+            </form>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );
